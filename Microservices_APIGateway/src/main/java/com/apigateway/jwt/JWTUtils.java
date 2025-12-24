@@ -28,10 +28,12 @@ public class JWTUtils {
         this.jwtExpirationMs = jwtExpirationMs;
     }
 
-    public String generateToken(String subject) {
+    public String generateToken(String email,String username) {
+        System.out.println("JWT USERNAME = " + username); 
 
         return Jwts.builder()
-                .setSubject(subject)
+                .setSubject(email)
+                .claim("username", username)
                 .setIssuedAt(new Date())
                 .setExpiration(
                         new Date(System.currentTimeMillis() + jwtExpirationMs)

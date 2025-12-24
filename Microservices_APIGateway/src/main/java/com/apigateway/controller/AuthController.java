@@ -72,11 +72,11 @@ public class AuthController {
                                             ))
                             );
                 });
-    }
+        }
 
-    @PostMapping("/signin")
-    public Mono<ResponseEntity<JWTResponse>> login(
-            @Valid @RequestBody LoginRequest request) {
+        @PostMapping("/signin")
+        public Mono<ResponseEntity<JWTResponse>> login(
+                @Valid @RequestBody LoginRequest request) {
 
         return userRepository.findByEmail(request.getEmail())
                 .switchIfEmpty(Mono.error(
@@ -98,11 +98,11 @@ public class AuthController {
                 .map(user ->
                         ResponseEntity.ok(
                                 new JWTResponse(
-                                        jwtUtils.generateToken(user.getEmail())
+                                        jwtUtils.generateToken(user.getEmail(),user.getUsername())
                                 )
                         )
                 );
-    }
+        }
 
     @PostMapping("/signout")
     public Mono<ResponseEntity<SignoutResponse>> logout(
