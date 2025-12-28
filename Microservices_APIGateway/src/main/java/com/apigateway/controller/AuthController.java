@@ -66,7 +66,8 @@ public class AuthController {
                                             .body(new SignupResponse(
                                                     savedUser.getUsername(),
                                                     savedUser.getEmail(),
-                                                    savedUser.getPassword()
+                                                    savedUser.getPassword(),
+                                                    savedUser.getRole()
                                             ))
                             );
                 });

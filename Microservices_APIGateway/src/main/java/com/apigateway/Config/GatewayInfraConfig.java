@@ -9,23 +9,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
-import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
-import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GatewayInfraConfig { 
-    @Bean
-    public ReactiveJwtDecoder jwtDecoder(@Value("${jwt.secret}") String secret) {
-        System.out.println("GATEWAY SECRET = " + secret);
-        SecretKey key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA512");
-        return NimbusReactiveJwtDecoder.withSecretKey(key)
-            .build();
-    } 
 
     @Bean
     public CorsWebFilter corsWebFilter() {
