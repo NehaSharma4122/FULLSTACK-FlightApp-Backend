@@ -23,10 +23,6 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/api/auth/**").permitAll()
-                        .pathMatchers("/microservice-flightservice/api/flight/airline/**").hasAuthority("ROLE_ADMIN")
-                        .pathMatchers("/microservice-bookingservice/api/flight/booking/**").hasAuthority("ROLE_USER")
-                        .pathMatchers("/microservice-flightservice/api/flight/search").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                        .pathMatchers("/microservice-bookingservice/api/flight/ticket/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyExchange().permitAll()                      
                 )

@@ -37,12 +37,9 @@ public class JWTAuthFilter extends AbstractGatewayFilterFactory<Object> {
     public GatewayFilter apply(Object config) {
 
         return (exchange, chain) -> {
-
-            // Allow CORS preflight
             if (exchange.getRequest().getMethod() == HttpMethod.OPTIONS) {
                 return chain.filter(exchange);
             }
-
             String authHeader = exchange.getRequest()
                     .getHeaders()
                     .getFirst(HttpHeaders.AUTHORIZATION);
