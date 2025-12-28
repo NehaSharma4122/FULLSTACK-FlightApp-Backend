@@ -14,15 +14,13 @@ import com.apigateway.request.SignupResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Mono;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import reactor.core.publisher.Mono;
-
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -58,8 +56,8 @@ public class AuthController {
                             null,
                             request.getUsername(),
                             request.getEmail(),
-                            encryptedPassword
-                            //Set.of(Role.ROLE_USER)
+                            encryptedPassword,
+                            request.getRole() != null ? request.getRole() : Role.ROLE_USER
                     );
 
                     return userRepository.save(user)
@@ -95,13 +93,25 @@ public class AuthController {
                                 "Invalid email or password"
                         )
                 ))
-                .map(user ->
-                        ResponseEntity.ok(
-                                new JWTResponse(
-                                        jwtUtils.generateToken(user.getEmail(),user.getUsername())
-                                )
+                .map(user -> {
+                        Role role = user.getRole() != null
+                                ? user.getRole()
+                                : Role.ROLE_USER;  
+                        String token = jwtUtils.generateToken(
+                        user.getEmail(),
+                        user.getUsername(),
+                        role
+                );
+
+                return ResponseEntity.ok(
+                        new JWTResponse(
+                                user.getUsername(),
+                                user.getEmail(),
+                                role,
+                                token
                         )
                 );
+                });
         }
 
     @PostMapping("/signout")
@@ -153,10 +163,4 @@ public class AuthController {
                             );
                 });
     }
-
-
-
-
-
-
 }
