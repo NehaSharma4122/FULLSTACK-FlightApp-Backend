@@ -128,7 +128,6 @@ public class JWTAuthFilter extends AbstractGatewayFilterFactory<Object> {
                                 if (!role.equals("ROLE_ADMIN")) {
                                     log.error("ACCESS BLOCKED — USER attempted ADMIN endpoint {}", path);
 
-                                    // 🔥 IMPORTANT — STOP REQUEST HERE 🔥
                                     return unauthorized(exchange);
                                 }
                             }
