@@ -49,7 +49,6 @@ public class JWTAuthFilter extends AbstractGatewayFilterFactory<Object> {
                 return unauthorized(exchange);
             }
 
-            // Clean malformed formats like ["Bearer xxx"] or "Bearer   xxx"
             String cleanHeader = authHeader
                     .replace("[", "")
                     .replace("]", "")
@@ -114,6 +113,25 @@ public class JWTAuthFilter extends AbstractGatewayFilterFactory<Object> {
 
                             var authorities =
                                     Collections.singletonList(new SimpleGrantedAuthority(role));
+
+                                    // ========= ROLE-BASED ACCESS CONTROL (RBAC) =========
+                            String path = exchange.getRequest().getPath().value();
+                            String method = exchange.getRequest().getMethod() != null
+                                    ? exchange.getRequest().getMethod().name()
+                                    : "UNKNOWN";
+
+                            log.info("REQUEST {} {} — user={} role={}", method, path, username, role);
+
+                            // ================= ADMIN-ONLY =================
+                            if (path.startsWith("/api/flight/airline")) {
+
+                                if (!role.equals("ROLE_ADMIN")) {
+                                    log.error("ACCESS BLOCKED — USER attempted ADMIN endpoint {}", path);
+
+                                    // 🔥 IMPORTANT — STOP REQUEST HERE 🔥
+                                    return unauthorized(exchange);
+                                }
+                            }
 
                             var authentication =
                                     new UsernamePasswordAuthenticationToken(
