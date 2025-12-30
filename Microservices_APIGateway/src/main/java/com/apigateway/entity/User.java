@@ -12,6 +12,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Document(collection = "users")
@@ -33,4 +35,14 @@ public class User {
     
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private List<String> passwordHistory;
+
+    private Date lastPasswordChangedAt;
+
+    private Integer failedAttempts;
+
+    private Date accountLockedUntil;
+
+    private boolean forcePasswordChange;
 }
