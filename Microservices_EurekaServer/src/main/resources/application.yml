@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: Microservices_EurekaServer
+
+server:
+  port: 8090
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8090/eureka/
+
+  server:
+    enable-self-preservation: false

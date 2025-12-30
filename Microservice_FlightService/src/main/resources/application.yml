@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: MICROSERVICE-FLIGHTSERVICE
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/flightmicroservicedb
+
+  jackson:
+    serialization:
+      indent_output: true
+
+server:
+  port: 8081
+
+logging:
+  level:
+    org.springframework.data.mongodb: DEBUG
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8090/eureka/
